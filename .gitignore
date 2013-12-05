@@ -1,0 +1,5 @@
+*.pyc
+*.csv
+*.CSV
+*.sublime-*
+.DS_Store
