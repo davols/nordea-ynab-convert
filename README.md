@@ -10,8 +10,4 @@ Example Usage
 ------------
     python ynabConvert.py FileFromNordea.csv 
     
-=======
-nordea-ynab-convert
-===================
-
-Nordea to YNAB (YouNeedABudget) converter for csv files.
+It will output an ynabImport.csv by default.     
