@@ -1,5 +1,5 @@
 import csv
-import sys
+import argparse
 
 def repr_data(hdr, data):
   return ', '.join('%s: %s' % (col, val) for col, val in zip(hdr,data))
@@ -71,20 +71,37 @@ class YnabTransaction(object):
 
 
 if __name__ == '__main__':
+  parser = argparse.ArgumentParser()
+  parser.add_argument('-o', '--output')
+  parser.add_argument('-i', '--input')
+  args = parser.parse_args()
+
   hdr_written = False
-  writer = csv.writer(open('ynabImport.csv', 'w'))
+  if(args.output==None):
+    writer = csv.writer(open('ynabImport.csv', 'w'))
+  else :
+    writer = csv.writer(open(args.output, 'w'))
+  if(args.input==None):
+    print 'Error. Needs input csv'
+    exit
+  else :
+    reader = csv.reader(open(args.input, 'r'),delimiter=';')
+    for row in reader:
+      if not hdr_written:
+        writer.writerow(YNAB_HDR)
+        hdr_written = True
+        continue
 
-  reader = csv.reader(open(sys.argv[1], 'r'),delimiter=';')
-  for row in reader:
-    if not hdr_written:
-      writer.writerow(YNAB_HDR)
-      hdr_written = True
-      continue
+      bank_tx = BankTransaction(row)
+      #print 'bank: (%s)' % bank_tx
 
-    bank_tx = BankTransaction(row)
-    #print 'bank: (%s)' % bank_tx
+      ynab_tx = YnabTransaction(bank_tx)
+      #print 'ynab: (%s)' % ynab_tx
 
-    ynab_tx = YnabTransaction(bank_tx)
-    #print 'ynab: (%s)' % ynab_tx
+      writer.writerow(ynab_tx.data)
 
-    writer.writerow(ynab_tx.data)
+    if(args.output==None):
+      print "Printed to ynabImport.csv"
+      writer = csv.writer(open('ynabImport.csv', 'w'))
+    else :
+      print "Printed to %s" %(args.output)

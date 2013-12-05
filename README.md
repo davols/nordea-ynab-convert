@@ -8,6 +8,11 @@ Fork from https://github.com/phildopus/bbt-ynab-convert
 
 Example Usage
 ------------
-    python ynabConvert.py FileFromNordea.csv 
-    
+    python ynabConvert.py -i FileFromNordea.csv 
+
+Flags
+------------------------
+* -i or --input to specify input csv file.
+* -o or --output to specify output csv. (OPTIONAL)
+
 It will output an ynabImport.csv by default.     
